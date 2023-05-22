@@ -1,3 +1,6 @@
 [submodule "components/libriccore"]
 	path = components/libriccore
 	url = git@github.com:icl-rocketry/libriccore.git
+[submodule "components/librnp"]
+	path = components/librnp
+	url = git@github.com:icl-rocketry/librnp.git
