@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Arduino.h>
+#include <stdint.h>
 #include <type_traits>
 
 enum class SYSTEM_FLAG:uint32_t{
@@ -36,7 +36,6 @@ enum class SYSTEM_FLAG:uint32_t{
     WARN_BATT = (1 << 24),
     //FLIGHTPHASES 
     FLIGHTPHASE_BOOST = (1 << 25),
-    
     FLIGHTPHASE_COAST = (1 << 26),
     FLIGHTPHASE_APOGEE = (1 << 27)
     
