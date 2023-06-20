@@ -11,7 +11,7 @@
 
 #include "commands.h"
 
-#include "rnp_packet.h"
+#include <librnp/rnp_packet.h>
 #include <libriccore/commands/commandhandler.h>
 
 #include "system.h"
@@ -26,7 +26,7 @@ void Commands::FreeRamCommand(System& sm, const RnpPacketSerialized& packet)
 	// this is not great as it assumes a single command handler with the same service ID
 	// would be better if we could pass some context through the function paramters so it has an idea who has called it
 	// or make it much clearer that only a single command handler should exist in the system
-	message.header.source_service = sm.commandhandler.getServieID(); 
+	message.header.source_service = sm.commandhandler.getServiceID(); 
 	
 	
 	message.header.destination_service = packet.header.source_service;

@@ -6,7 +6,7 @@
 #include <initializer_list>
 
 #include <libriccore/commands/commandhandler.h>
-#include "rnp_packet.h"
+#include <librnp/rnp_packet.h>
 
 #include "config/forward_decl.h"
 #include "commands/commands.h"

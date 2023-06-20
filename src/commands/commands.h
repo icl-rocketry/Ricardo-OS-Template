@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #include "config/forward_decl.h"
-#include "rnp_packet.h"
+#include <librnp/rnp_packet.h>
 
 namespace Commands{
     
