@@ -7,3 +7,6 @@
 [submodule "components/arduino"]
 	path = components/arduino
 	url = https://github.com/espressif/arduino-esp32.git
+[submodule "components/librrc"]
+	path = components/librrc
+	url = git@github.com:icl-rocketry/librrc.git
