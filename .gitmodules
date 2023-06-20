@@ -4,3 +4,6 @@
 [submodule "components/librnp"]
 	path = components/librnp
 	url = git@github.com:icl-rocketry/librnp.git
+[submodule "components/arduino"]
+	path = components/arduino
+	url = https://github.com/espressif/arduino-esp32.git
