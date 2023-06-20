@@ -22,13 +22,17 @@ RicCoreSystem(Commands::command_map,Commands::defaultEnabledCommands,Serial)
 
 
 void System::systemSetup(){
-
-    Serial.begin(GeneralConfig::SerialBaud);
+    
     Serial.setRxBufferSize(GeneralConfig::SerialRxSize);
+    Serial.begin(GeneralConfig::SerialBaud);
+   
+    //intialize rnp message logger
+    loggerhandler.retrieve_logger<RicCoreLoggingConfig::LOGGERS::SYS>().initialize(networkmanager);
 
     //initialize statemachine with idle state
     statemachine.initalize(std::make_unique<Idle>(systemstatus,commandhandler));
     //any other setup goes here
+   
 
 };
 

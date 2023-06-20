@@ -1,6 +1,7 @@
 {
     "idf.adapterTargetName": "esp32",
     "files.associations": {
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "core": "cpp"
     }
 }
