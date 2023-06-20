@@ -12,13 +12,13 @@ class System : public RicCoreSystem<System,SYSTEM_FLAG,Commands::ID>
 {
     public:
 
-        System():
-        RicCoreSystem(Commands::command_map,Commands::defaultEnabledCommands,)
-        {};
-
+        System();
+        
         void systemSetup();
 
-        void systemUpdate(){};
+        void systemUpdate();
+
+    // private:
 
 
-}
+};

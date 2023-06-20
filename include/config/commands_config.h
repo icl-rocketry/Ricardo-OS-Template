@@ -20,9 +20,9 @@ namespace Commands
         Free_Ram = 250
     };
 
-    std::initializer_list<ID> defaultEnabledCommands = {};
+    inline std::initializer_list<ID> defaultEnabledCommands = {};
 
-    std::unordered_map<ID, std::function<void(ForwardDecl_SystemClass &, const RnpPacketSerialized &)>> command_map{
+    inline std::unordered_map<ID, std::function<void(ForwardDecl_SystemClass &, const RnpPacketSerialized &)>> command_map{
         {ID::Free_Ram, FreeRamCommand}};
 
 
