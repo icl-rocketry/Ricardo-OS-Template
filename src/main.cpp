@@ -10,12 +10,15 @@
 
 #include "system.h"
 
+
+
 static constexpr bool exceptionsEnabled = true; //for debugging -> will integrate this into the sd configuration options later
 
 
 TaskHandle_t loopTaskHandle = NULL;
 
 System ricSystem;
+
 
 void setup_task()
 {

@@ -10,3 +10,6 @@
 [submodule "components/librrc"]
 	path = components/librrc
 	url = git@github.com:icl-rocketry/librrc.git
+[submodule "components/ArduinoJson"]
+	path = components/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson.git
