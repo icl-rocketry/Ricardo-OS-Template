@@ -1,4 +1,4 @@
-#include "config/loggerhandler_config.h"
+#include "Config/loggerhandler_config.h"
 
 #include <libriccore/logging/loggers/coutlogger.h>
 #include <libriccore/logging/loggers/rnpmessagelogger.h>

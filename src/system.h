@@ -2,11 +2,11 @@
 
 #include <libriccore/riccoresystem.h>
 
-#include "config/systemflags_config.h"
-#include "config/commands_config.h"
-#include "config/pinmap_config.h"
+#include "Config/systemflags_config.h"
+#include "Config/commands_config.h"
+#include "Config/pinmap_config.h"
 
-#include "commands/commands.h"
+#include "Commands/commands.h"
 
 class System : public RicCoreSystem<System,SYSTEM_FLAG,Commands::ID>
 {

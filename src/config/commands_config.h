@@ -8,8 +8,8 @@
 #include <libriccore/commands/commandhandler.h>
 #include <librnp/rnp_packet.h>
 
-#include "config/forward_decl.h"
-#include "commands/commands.h"
+#include "Config/forward_decl.h"
+#include "Commands/commands.h"
 
 
 namespace Commands

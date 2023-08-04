@@ -38,7 +38,7 @@ void loopTask(void *pvParameters)
     setup_task();
     for(;;) {
         inner_loop_task();
-        vTaskDelay(1); // this is important to allow the watchdog to be reset
+        vTaskDelay(1); // this is important to allow the watchdog to be reset, and to let any other threads on the core work
     }
 }
 

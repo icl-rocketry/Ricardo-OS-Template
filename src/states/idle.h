@@ -16,8 +16,8 @@
 #include <libriccore/systemstatus/systemstatus.h>
 #include <libriccore/commands/commandhandler.h>
 
-#include "config/systemflags_config.h"
-#include "config/types.h"
+#include "Config/systemflags_config.h"
+#include "Config/types.h"
 
 class Idle : public Types::CoreTypes::State_t
 {

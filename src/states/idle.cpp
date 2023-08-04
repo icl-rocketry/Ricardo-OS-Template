@@ -7,8 +7,8 @@
 #include <libriccore/commands/commandhandler.h>
 #include <libriccore/riccorelogging.h>
 
-#include "config/systemflags_config.h"
-#include "config/types.h"
+#include "Config/systemflags_config.h"
+#include "Config/types.h"
 
 #include "system.h"
 
@@ -20,7 +20,8 @@ _commandhandler(commandhandler)
 
 void Idle::initialize()
 {
-    Types::CoreTypes::State_t::initialize(); // call parent initialize first!
+    State::initialize(); // call parent initialize first!
+    _commandhandler.enableCommands({Commands::ID::Free_Ram});
 };
 
 Types::CoreTypes::State_ptr_t Idle::update()

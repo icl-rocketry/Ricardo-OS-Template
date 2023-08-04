@@ -6,14 +6,14 @@
 
 #include <HardwareSerial.h>
 
-#include "config/systemflags_config.h"
-#include "config/commands_config.h"
-#include "config/pinmap_config.h"
-#include "config/general_config.h"
+#include "Config/systemflags_config.h"
+#include "Config/commands_config.h"
+#include "Config/pinmap_config.h"
+#include "Config/general_config.h"
 
-#include "commands/commands.h"
+#include "Commands/commands.h"
 
-#include "states/idle.h"
+#include "States/idle.h"
 
 
 System::System():
