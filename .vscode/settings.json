@@ -1,7 +1,11 @@
 {
-    "idf.adapterTargetName": "esp32",
+    "idf.adapterTargetName": "esp32s3",
     "files.associations": {
         "*.ipp": "cpp",
         "core": "cpp"
-    }
+    },
+    "idf.port": "/dev/cu.usbserial-120",
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ]
 }

@@ -24,12 +24,14 @@ void setup_task()
 {
     //MUST CALL CORE SYSTEM SETUP
     ricSystem.coreSystemSetup();
+    // setup();
 }
 
 void inner_loop_task()
 {
     //must call core system update
     ricSystem.coreSystemUpdate();
+    // loop();
 }
 
 void loopTask(void *pvParameters)
