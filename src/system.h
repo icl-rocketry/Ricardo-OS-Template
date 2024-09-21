@@ -30,17 +30,4 @@ class System : public RicCoreSystem<System,SYSTEM_FLAG,Commands::ID>
 
         SdFat_Store filestore;
 
-        std::unique_ptr<WrappedFile> file_ptr;
-        std::unique_ptr<WrappedFile> file_ptr2;
-
-        uint32_t prevtime;
-
-        std::vector<uint8_t> data;
-        std::vector<uint8_t> data2;
-
-        
-
-        
-
-
 };

@@ -15,4 +15,5 @@
 	url = https://github.com/bblanchon/ArduinoJson.git
 [submodule "lib/SdFat"]
 	path = lib/SdFat
-	url = https://github.com/greiman/SdFat.git
+	url = https://github.com/icl-rocketry/SdFat.git
+	branch = bug-fix
