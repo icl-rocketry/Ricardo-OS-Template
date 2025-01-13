@@ -2,7 +2,8 @@
 Barebones template for firmware intended for the ricardo avionics ecosystem.
 
 # Documentation
-High level overview on the wiki (https://wiki.imperialrocketry.com/en/Electronics/Software/Ricardo-OS-Template).\
+High level overview on the wiki (https://wiki.imperialrocketry.com/en/Electronics/Software/Ricardo-OS-Template).
+
 Detailed documentation can be found using the doxy file.
 
 # Building
