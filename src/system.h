@@ -1,6 +1,7 @@
 #pragma once
 
 #include <libriccore/riccoresystem.h>
+#include <libriccore/networkinterfaces/can/canbus.h>
 
 #include <memory>
 
@@ -8,26 +9,30 @@
 #include "Config/commands_config.h"
 #include "Config/pinmap_config.h"
 
+#include "nrccrosshair.h"
+
 #include "Commands/commands.h"
 
 #include "Storage/sdfat_store.h"
 #include "Storage/sdfat_file.h"
 
 #include <SPI.h>
-class System : public RicCoreSystem<System,SYSTEM_FLAG,Commands::ID>
+
+class System : public RicCoreSystem<System,SYSTEM_FLAG, Commands::ID>
 {
-    public:
+public:
 
-        System();
-        
-        void systemSetup();
+    System();
 
-        void systemUpdate();
+    void systemSetup();
 
-    private:
+    void systemUpdate();
 
-        SPIClass vspi;
+private:
+    // Can bus interface
+    CanBus<SYSTEM_FLAG> canbus;
 
-        SdFat_Store filestore;
-
+public:
+    // Board controller
+    NRCCrosshair crosshair;
 };

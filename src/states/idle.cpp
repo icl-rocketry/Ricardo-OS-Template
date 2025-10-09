@@ -12,20 +12,21 @@
 
 #include "system.h"
 
+/**
+ * @brief The Idle state will do nothing except transition to armed when it is
+ * armed by another device.
+ */
 
 Idle::Idle(Types::CoreTypes::SystemStatus_t& systemtatus, Types::CoreTypes::CommandHandler_t& commandhandler):
 State(SYSTEM_FLAG::STATE_IDLE,systemtatus),
 _commandhandler(commandhandler)
 {};
 
-void Idle::initialize()
-{
+void Idle::initialize() {
     State::initialize(); // call parent initialize first!
-    _commandhandler.enableCommands({Commands::ID::Free_Ram});
 };
 
-Types::CoreTypes::State_ptr_t Idle::update()
-{
+Types::CoreTypes::State_ptr_t Idle::update() {
     if (millis()-prevLogMessageTime > 1000)
     {
         RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Idle heartbeat!");
@@ -35,7 +36,6 @@ Types::CoreTypes::State_ptr_t Idle::update()
     return nullptr;
 };
 
-void Idle::exit()
-{
+void Idle::exit() {
     Types::CoreTypes::State_t::exit(); // call parent exit last!
 };

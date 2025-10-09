@@ -12,23 +12,21 @@
 
 
 
-bool TelemetryLogger::initialize(std::unique_ptr<WrappedFile> file,std::function<void(std::string_view message)> logcb)
-{
-    if (logcb)
-    {
+bool TelemetryLogger::initialize(std::unique_ptr<WrappedFile> file, std::function<void(std::string_view message)> logcb) {
+    if (logcb) {
         internalLogCB = logcb;
     }
 
     if (file == nullptr){return false;};
     _file = std::move(file);
-    initialized=true;
+    initialized = true;
     return true;
 }
 
 void TelemetryLogger::log(TelemetryLogframe& logframe)
 {
-    if (!initialized){return;};
-    if (!enabled){return;};
+    if (!initialized){ return; };
+    if (!enabled){ return; };
 
     std::string dataframe_string = logframe.stringify();
 
