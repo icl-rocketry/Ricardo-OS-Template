@@ -20,7 +20,7 @@ Deploy::Deploy(Types::CoreTypes::SystemStatus_t& systemstatus, Types::CoreTypes:
         State(SYSTEM_FLAG::STATE_DEPLOY,systemstatus),
         commandhandler(commandhandler),
         systemstatus(systemstatus),
-        crosshair(crosshair) {};
+        crosshair(crosshair) {}
 
 void Deploy::initialize() {
     State::initialize(); // call parent initialize first!
@@ -29,7 +29,9 @@ void Deploy::initialize() {
     crosshair.pyroAdapter.execute(0);
     ignitionTime = millis();
     crosshair.deployed = true;
-};
+
+    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Deployed at altitude : " + std::to_string(crosshair.baroData.alt));
+}
 
 Types::CoreTypes::State_ptr_t Deploy::update() {
     if (millis() - prevLogMessageTime > 1000) {
@@ -37,7 +39,7 @@ Types::CoreTypes::State_ptr_t Deploy::update() {
         prevLogMessageTime = millis();
     }
 
-    if(millis() - ignitionTime < GeneralConfig::PYRO_IGNITION_TIME) {
+    if (millis() - ignitionTime < GeneralConfig::PYRO_IGNITION_TIME) {
         // Stay in the ignition state for PYRO_IGNITION_TIME
         return nullptr;
     } else {
@@ -46,7 +48,7 @@ Types::CoreTypes::State_ptr_t Deploy::update() {
     }
 
     return nullptr;
-};
+}
 
 void Deploy::exit()
 {

@@ -40,10 +40,7 @@ public:
 
     void arm_base(int32_t arg);
     void disarm_base();
-
-    uint8_t Pyroservice = static_cast<uint8_t>(Services::ID::Pyro);
-
-    void execute_impl(packetptr_t packetptr);
+    void execute_base(int32_t arg);
 
     friend class NRCRemoteActuatorBase;
     friend class NRCRemoteBase;
@@ -67,6 +64,7 @@ public:
     SPIClass spiBaro;
     DPS368 baro;
     SensorStructs::BaroState_t baroData;
+    float smoothedBaroAlt;
 
     // Voltage Rail Monitors
     // VRailMonitor logicRail;
@@ -89,4 +87,6 @@ public:
     // Logging
     TelemetryLogframe logFrame;
     TelemetryLogger fileLogger;
+    std::string logFilePath;
+    bool logToFile = false;
 };

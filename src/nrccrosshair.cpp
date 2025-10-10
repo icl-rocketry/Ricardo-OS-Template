@@ -15,6 +15,7 @@ NRCCrosshair::NRCCrosshair(RnpNetworkManager& networkmanager, Types::CrosshairTy
         spiBaro(1),
         baro(spiBaro, systemstatus, PinMap::BARO_CS),
         baroData({ 0 }),
+        smoothedBaroAlt(0),
         // logicRail("Logic VRailMonitor", PinMap::BatteryV, GeneralConfig::LOGIC_r1, GeneralConfig::LOGIC_r2),
         qdRail("QD VRailMonitor", PinMap::QDV, GeneralConfig::DEPLOY_r1, GeneralConfig::DEPLOY_r2),
         lowVoltageTriggered(false),
@@ -43,8 +44,13 @@ void NRCCrosshair::setup() {
     // Initialise state machine
     stateMachine.initalize(std::make_unique<Idle>(systemstatus, commandHandler));
 
-    std::unique_ptr<WrappedFile> logFile = filestore.open(GeneralConfig::LogFilename);
-    fileLogger.initialize(std::move(logFile));
+    try {
+        logFilePath = filestore.generateUniquePath("/logs", GeneralConfig::LogFilename);
+        std::unique_ptr<WrappedFile> logFile = filestore.open(logFilePath);
+        logToFile = fileLogger.initialize(std::move(logFile));
+    } catch (std::exception& e) {
+        Serial.println((" ----- SD CARD NOT AVAILABLE ----- : " + std::string(e.what())).c_str());
+    }
 }
 
 void NRCCrosshair::update() {
@@ -59,14 +65,14 @@ void NRCCrosshair::update() {
     }
 
     // Read in barometer data
+    float prevBaroAlt = baroData.alt;
     baro.update(baroData);
-
-    // Update state machine
-    stateMachine.update();
+    // Simple exponential smoothing
+    smoothedBaroAlt = prevBaroAlt * 0.6 + baroData.alt * 0.4;
 
     // If correct time then log to SD
     static unsigned long lastTimeLogged = 0;
-    if (logFrame.timestamp - lastTimeLogged < GeneralConfig::SD_LOG_INTERVAL) {
+    if (logToFile && (systemstatus.flagSet(SYSTEM_FLAG::STATE_ARMED) || systemstatus.flagSet(SYSTEM_FLAG::STATE_DEPLOY)) && logFrame.timestamp - lastTimeLogged < GeneralConfig::SD_LOG_INTERVAL) {
         lastTimeLogged = millis();
 
         logFrame.deployed = deployed;
@@ -76,6 +82,7 @@ void NRCCrosshair::update() {
 
 void NRCCrosshair::arm_base(int32_t arg) {
     RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Arming Crosshair");
+    baro.calibrateBaro();
 
     // Call parent arm
     NRCRemoteActuatorBase<NRCCrosshair>::arm_base(arg);
@@ -83,13 +90,12 @@ void NRCCrosshair::arm_base(int32_t arg) {
     // Arm the pyro and re-calibrate the barometer
     // Indicates that the module is ready to launch
     pyroAdapter.arm(arg);
-    baro.calibrateBaro();
 
     // If the pyro adapter is
-    if (pyroAdapter.getState().flagSet(LIBRRC::COMPONENT_STATUS_FLAGS::NOMINAL)) {
-        networkmanager.registerService(Pyroservice, pyro.getThisNetworkCallback());
-        stateMachine.changeState(std::make_unique<Armed>(systemstatus, commandHandler, *this));
-    }
+    // if (pyroAdapter.getState().flagSet(LIBRRC::COMPONENT_STATUS_FLAGS::NOMINAL)) {
+    networkmanager.registerService(static_cast<uint8_t>(Services::ID::Pyro), pyro.getThisNetworkCallback());
+    stateMachine.changeState(std::make_unique<Armed>(systemstatus, commandHandler, *this));
+    // }
 }
 
 void NRCCrosshair::disarm_base() {
@@ -100,33 +106,42 @@ void NRCCrosshair::disarm_base() {
 
     // Disarm pyro and remove from network manager
     pyroAdapter.disarm();
-    networkmanager.unregisterService(Pyroservice);
+    networkmanager.unregisterService(static_cast<uint8_t>(Services::ID::Pyro));
 
     // Go back to idle state
     stateMachine.changeState(std::make_unique<Idle>(systemstatus, commandHandler));
 }
 
-void NRCCrosshair::execute_impl(packetptr_t packetptr) {
-    SimpleCommandPacket cmd(*packetptr);
+void NRCCrosshair::execute_base(int32_t arg) {
 
-    switch (cmd.arg) {
+    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Executing arg " + std::to_string(arg));
+
+    switch (arg) {
         case 1: // Default
-            if (!systemstatus.flagSet(SYSTEM_FLAG::STATE_IDLE)) break;
-            stateMachine.changeState(std::make_unique<Idle>(systemstatus, commandHandler));
+            if (systemstatus.flagSet(SYSTEM_FLAG::STATE_IDLE)) break;
+            disarm_base();
             break;
 
         case 2: // Armed
-            if (!systemstatus.flagSet(SYSTEM_FLAG::STATE_ARMED)) break;
+            if (systemstatus.flagSet(SYSTEM_FLAG::STATE_ARMED)) break;
             arm_base(0);
             break;
 
         case 3: // Deploy
-            if (!systemstatus.flagSet(SYSTEM_FLAG::STATE_DEPLOY)) break;
+            if (systemstatus.flagSet(SYSTEM_FLAG::STATE_DEPLOY) || systemstatus.flagSet(SYSTEM_FLAG::STATE_IDLE)) {
+                if (systemstatus.flagSet(SYSTEM_FLAG::STATE_DEPLOY)) {
+                    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("DEPLOYED ALREADY");
+                }
+                if (systemstatus.flagSet(SYSTEM_FLAG::STATE_IDLE)) {
+                    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("IDLE ALREADY");
+                }
+                break;
+            }
             stateMachine.changeState(std::make_unique<Deploy>(systemstatus, commandHandler, *this));
             break;
 
         // case 4: // Debug
-        //     if (!systemstatus.flagSet(SYSTEM_FLAG::STATE_DEBUG)) break;
+        //     if (systemstatus.flagSet(SYSTEM_FLAG::STATE_DEBUG)) break;
         //     stateMachine.changeState(std::make_unique<Debug>(m_PyroInitParams, m_networkmanager, *this));
         //     break;
 

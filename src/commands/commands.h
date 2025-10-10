@@ -15,8 +15,6 @@
 #include <librnp/rnp_packet.h>
 
 namespace Commands{
-
     void FreeRamCommand(ForwardDecl_SystemClass& system, const RnpPacketSerialized& packet);
     void CrosshairTelem(ForwardDecl_SystemClass& system, const RnpPacketSerialized& packet);
-
 }

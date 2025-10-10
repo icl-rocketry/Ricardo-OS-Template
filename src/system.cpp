@@ -40,11 +40,21 @@ void System::systemSetup(){
     statemachine.initalize(std::make_unique<Idle>(systemstatus,commandhandler));
     //any other setup goes here
 
+    canbus.setup();
+
     networkmanager.setNodeType(NODETYPE::HUB);
     networkmanager.setNoRouteAction(NOROUTE_ACTION::BROADCAST,{1,3});
     networkmanager.addInterface(&canbus);
-    canbus.setup();
-};
+
+    crosshair.setup();
+    networkmanager.registerService(static_cast<uint8_t>(Services::ID::Crosshair), crosshair.getThisNetworkCallback());
+
+    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Setting up");
+
+    delay(500);
+}
 
 
-void System::systemUpdate(){};
+void System::systemUpdate(){
+    crosshair.update();
+}

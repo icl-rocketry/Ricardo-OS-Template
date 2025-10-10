@@ -59,11 +59,14 @@ private:
     Types::CoreTypes::CommandHandler_t& commandhandler;
     uint32_t prevLogMessageTime;
 
+    unsigned long armStartTime;
+    unsigned long armIdleTime;
+
 public:
     NRCCrosshair& crosshair;
 
 private:
-    bool hasGoneOverDeploymentAlt;
+    bool hasGoneOverDeploymentAlt = false;
     const float deploymentAlt = GeneralConfig::DEPLOYMENT_ALTITUDE; // Altitude to trigger pyro channel at.
     const float dAlt = GeneralConfig::DEPLOYMENT_DALT; // Altitude debounce delta. Positive will only trigger at deployment alt + dAlt, and lower will only trigger at -dAtl.
 };

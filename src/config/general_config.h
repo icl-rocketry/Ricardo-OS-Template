@@ -17,16 +17,16 @@ namespace GeneralConfig{
     // static constexpr int LOGIC_LOW_V = 0;
     // static constexpr int LOGIC_MIN_V = 0;
 
-    static constexpr float DEPLOYMENT_ALTITUDE = 550;
-    static constexpr float DEPLOYMENT_DALT = 50;
+    static constexpr float DEPLOYMENT_ALTITUDE = 1;
+    static constexpr float DEPLOYMENT_DALT = 0.5;
 
     static constexpr int DEPLOY_r1 = 10;
     static constexpr int DEPLOY_r2 = 18;
-    static constexpr int DEPLOY_MAX_V = 0;
-    static constexpr int DEPLOY_LOW_V = 0;
+    static constexpr int DEPLOY_MAX_V = 10;
+    static constexpr int DEPLOY_LOW_V = 5;
     static constexpr int DEPLOY_MIN_V = 0;
 
-    static constexpr int CANBUS_ID = 1;
+    static constexpr int CANBUS_ID = 3;
 
     static constexpr unsigned long PYRO_IGNITION_TIME = 500;
 

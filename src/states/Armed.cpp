@@ -22,24 +22,32 @@ Armed::Armed(Types::CoreTypes::SystemStatus_t& systemstatus, Types::CoreTypes::C
         State(SYSTEM_FLAG::STATE_IDLE,systemstatus),
         systemstatus(systemstatus),
         commandhandler(commandhandler),
+        armIdleTime(3000),
         crosshair(crosshair) {};
 
 void Armed::initialize() {
     State::initialize(); // call parent initialize first!
+
+    armStartTime = millis();
 };
 
 Types::CoreTypes::State_ptr_t Armed::update() {
     if (millis() - prevLogMessageTime > 1000) {
-        RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Armed heartbeat!");
+        RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Armed heartbeat! Alt : " + std::to_string(crosshair.smoothedBaroAlt) + ", prs : " + std::to_string(crosshair.baroData.press) + ", rbus voltage : " + std::to_string(crosshair.qdRailVoltage) + ", lowvt : " + std::string(crosshair.lowVoltageTriggered ? "true" : "false") + ", overdep : " + std::string(hasGoneOverDeploymentAlt ? "true" : "false"));
         prevLogMessageTime = millis();
     }
 
-    if (crosshair.baroData.alt > deploymentAlt + dAlt) {
+    // Dont do anything for until timeout has run out
+    if (millis() - armStartTime < armIdleTime) {
+        return nullptr;
+    }
+
+    if (crosshair.smoothedBaroAlt > deploymentAlt + dAlt) {
         hasGoneOverDeploymentAlt = true;
     }
 
     // Test conditions for deployment
-    if (hasGoneOverDeploymentAlt && (crosshair.baroData.alt - dAlt < deploymentAlt) && crosshair.lowVoltageTriggered) {
+    if (hasGoneOverDeploymentAlt && (crosshair.smoothedBaroAlt < deploymentAlt - dAlt) && crosshair.lowVoltageTriggered) {
         return std::make_unique<Deploy>(systemstatus, commandhandler, crosshair);
     }
 
