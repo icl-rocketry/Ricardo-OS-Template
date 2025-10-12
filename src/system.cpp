@@ -31,7 +31,7 @@ void System::systemSetup(){
     Serial.setRxBufferSize(GeneralConfig::SerialRxSize);
     Serial.begin(GeneralConfig::SerialBaud);
 
-    delay(2000);
+    // delay(2000);
 
     //intialize rnp message logger
     loggerhandler.retrieve_logger<RicCoreLoggingConfig::LOGGERS::SYS>().initialize(networkmanager);
@@ -51,10 +51,15 @@ void System::systemSetup(){
 
     RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Setting up");
 
-    delay(500);
+    gpio_reset_pin(static_cast<gpio_num_t>(PinMap::CELL_SWITCH));
+    pinMode(PinMap::CELL_SWITCH, OUTPUT);
+    delay(50);
+    digitalWrite(PinMap::CELL_SWITCH, HIGH);
 }
 
 
 void System::systemUpdate(){
     crosshair.update();
+    // digitalWrite(PinMap::CELL_SWITCH, HIGH);
+    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Pinstate : " + std::to_string(digitalRead(PinMap::CELL_SWITCH)));
 }

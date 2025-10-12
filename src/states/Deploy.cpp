@@ -26,7 +26,7 @@ void Deploy::initialize() {
     State::initialize(); // call parent initialize first!
 
     // Deploy ignition
-    crosshair.pyroAdapter.execute(0);
+    crosshair.pyroAdapter.execute(1);
     ignitionTime = millis();
     crosshair.deployed = true;
 

@@ -51,6 +51,8 @@ void NRCCrosshair::setup() {
     } catch (std::exception& e) {
         Serial.println((" ----- SD CARD NOT AVAILABLE ----- : " + std::string(e.what())).c_str());
     }
+
+    pyro.setup();
 }
 
 void NRCCrosshair::update() {

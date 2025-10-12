@@ -29,6 +29,8 @@ namespace PinMap{
     // ADC VRail monitor pins
     // static constexpr int BatteryV = 15;
     static constexpr int QDV = 10;
+
+    static constexpr int CELL_SWITCH = 42;
 };
 
 
