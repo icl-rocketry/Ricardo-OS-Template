@@ -60,6 +60,5 @@ void System::systemSetup(){
 
 void System::systemUpdate(){
     crosshair.update();
-    // digitalWrite(PinMap::CELL_SWITCH, HIGH);
-    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Pinstate : " + std::to_string(digitalRead(PinMap::CELL_SWITCH)));
+    digitalWrite(PinMap::CELL_SWITCH, HIGH);
 }
