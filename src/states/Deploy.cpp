@@ -26,18 +26,18 @@ void Deploy::initialize() {
     State::initialize(); // call parent initialize first!
 
     // Deploy ignition
-    crosshair.pyroAdapter.execute(1);
+    crosshair.pyroAdapter.execute(GeneralConfig::PYRO_IGNITION_TIME);
     ignitionTime = millis();
     crosshair.deployed = true;
 
-    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Deployed at altitude : " + std::to_string(crosshair.baroData.alt));
+    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Crosshair deployed at altitude : " + std::to_string(crosshair.baroData.alt));
 }
 
 Types::CoreTypes::State_ptr_t Deploy::update() {
-    if (millis() - prevLogMessageTime > 1000) {
-        RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Deploy heartbeat!");
-        prevLogMessageTime = millis();
-    }
+    // if (millis() - prevLogMessageTime > 1000) {
+    //     RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Deploy heartbeat!");
+    //     prevLogMessageTime = millis();
+    // }
 
     if (millis() - ignitionTime < GeneralConfig::PYRO_IGNITION_TIME) {
         // Stay in the ignition state for PYRO_IGNITION_TIME

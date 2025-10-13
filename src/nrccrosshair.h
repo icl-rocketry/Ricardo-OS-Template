@@ -89,4 +89,7 @@ public:
     TelemetryLogger fileLogger;
     std::string logFilePath;
     bool logToFile = false;
+
+    // I2C for Buck Boost
+    TwoWire i2c;
 };

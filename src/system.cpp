@@ -20,6 +20,9 @@
 #include "Storage/sdfat_store.h"
 #include "Storage/sdfat_file.h"
 
+#include <Arduino.h>
+
+TwoWire I2C(0);
 
 System::System():
         RicCoreSystem(Commands::command_map,Commands::defaultEnabledCommands,Serial),
@@ -49,16 +52,13 @@ void System::systemSetup(){
     crosshair.setup();
     networkmanager.registerService(static_cast<uint8_t>(Services::ID::Crosshair), crosshair.getThisNetworkCallback());
 
-    RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Setting up");
-
     gpio_reset_pin(static_cast<gpio_num_t>(PinMap::CELL_SWITCH));
     pinMode(PinMap::CELL_SWITCH, OUTPUT);
     delay(50);
-    digitalWrite(PinMap::CELL_SWITCH, HIGH);
+    digitalWrite(PinMap::CELL_SWITCH, LOW);
 }
 
 
 void System::systemUpdate(){
     crosshair.update();
-    digitalWrite(PinMap::CELL_SWITCH, HIGH);
 }

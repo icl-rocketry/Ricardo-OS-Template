@@ -19,7 +19,7 @@
  * It will transition to deploy state if needed.
  */
 Armed::Armed(Types::CoreTypes::SystemStatus_t& systemstatus, Types::CoreTypes::CommandHandler_t& commandhandler, NRCCrosshair& crosshair):
-        State(SYSTEM_FLAG::STATE_IDLE,systemstatus),
+        State(SYSTEM_FLAG::STATE_ARMED,systemstatus),
         systemstatus(systemstatus),
         commandhandler(commandhandler),
         armIdleTime(3000),
@@ -32,10 +32,10 @@ void Armed::initialize() {
 };
 
 Types::CoreTypes::State_ptr_t Armed::update() {
-    if (millis() - prevLogMessageTime > 1000) {
-        RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Armed heartbeat! Alt : " + std::to_string(crosshair.smoothedBaroAlt) + ", prs : " + std::to_string(crosshair.baroData.press) + ", rbus voltage : " + std::to_string(crosshair.qdRailVoltage) + ", lowvt : " + std::string(crosshair.lowVoltageTriggered ? "true" : "false") + ", overdep : " + std::string(hasGoneOverDeploymentAlt ? "true" : "false"));
-        prevLogMessageTime = millis();
-    }
+    // if (millis() - prevLogMessageTime > 1000) {
+    //     RicCoreLogging::log<RicCoreLoggingConfig::LOGGERS::SYS>("Armed heartbeat! Alt : " + std::to_string(crosshair.smoothedBaroAlt) + ", prs : " + std::to_string(crosshair.baroData.press) + ", rbus voltage : " + std::to_string(crosshair.qdRailVoltage) + ", lowvt : " + std::string(crosshair.lowVoltageTriggered ? "true" : "false") + ", overdep : " + std::string(hasGoneOverDeploymentAlt ? "true" : "false"));
+    //     prevLogMessageTime = millis();
+    // }
 
     // Dont do anything for until timeout has run out
     if (millis() - armStartTime < armIdleTime) {

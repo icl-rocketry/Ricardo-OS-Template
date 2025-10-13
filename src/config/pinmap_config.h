@@ -31,6 +31,10 @@ namespace PinMap{
     static constexpr int QDV = 10;
 
     static constexpr int CELL_SWITCH = 42;
+
+    // I2C
+    static constexpr int I2C_SCL = 35;
+    static constexpr int I2C_SDA = 36;
 };
 
 
