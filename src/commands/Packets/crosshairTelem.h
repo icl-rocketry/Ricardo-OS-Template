@@ -16,7 +16,8 @@ class CrosshairTelemPacket : public RnpPacket{
                 &CrosshairTelemPacket::qdVoltageMV,
                 &CrosshairTelemPacket::deployed,
                 &CrosshairTelemPacket::system_status,
-                &CrosshairTelemPacket::system_time
+                &CrosshairTelemPacket::system_time,
+                &CrosshairTelemPacket::baro_alt
             );
 
             return ret;
@@ -42,9 +43,9 @@ class CrosshairTelemPacket : public RnpPacket{
 
         uint32_t qdVoltageMV;
         bool deployed;
-
         uint32_t system_status;
         uint64_t system_time;
+        float baro_alt;
 
         static constexpr size_t size(){
             return getSerializer().member_size();

@@ -10,6 +10,7 @@ private:
         auto ret = RnpSerializer(
             &TelemetryLogframe::timestamp,
             &TelemetryLogframe::qdVoltageMV,
+            &TelemetryLogframe::baroAlt,
             &TelemetryLogframe::deployed
         );
         return ret;
@@ -19,6 +20,7 @@ public:
     uint64_t timestamp = 0;
     uint32_t qdVoltageMV = 0; // QDVoltage in mV
     bool deployed = false;
+    float baroAlt = 0;
 
     std::string stringify()const{
         return getSerializer().stringify(*this) + "\n";

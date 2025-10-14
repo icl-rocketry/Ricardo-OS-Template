@@ -48,9 +48,8 @@ void NRCCrosshair::setup() {
     stateMachine.initalize(std::make_unique<Idle>(systemstatus, commandHandler));
 
     try {
-        logFilePath = filestore.generateUniquePath("/logs", GeneralConfig::LogFilename);
-
         filestore.mkdir("/logs");
+        logFilePath = filestore.generateUniquePath("/logs", GeneralConfig::LogFilename);
 
         std::unique_ptr<WrappedFile> logFile = filestore.open(logFilePath + ".txt", static_cast<FILE_MODE>(O_WRITE | O_CREAT | O_AT_END));
         logToFile = fileLogger.initialize(std::move(logFile));
@@ -71,9 +70,6 @@ void NRCCrosshair::update() {
     if (qdRail.update(voltage)) {
         qdRailVoltage = voltage;
         lowVoltageTriggered = qdRail._lowVoltageTriggered;
-
-        logFrame.qdVoltageMV = static_cast<uint32_t>(qdRailVoltage * 1000);
-        logFrame.timestamp = millis();
     }
 
     // Read in barometer data
@@ -84,10 +80,12 @@ void NRCCrosshair::update() {
 
     // If correct time then log to SD
     static unsigned long lastTimeLogged = 0;
-    if (logToFile && logFrame.timestamp - lastTimeLogged < GeneralConfig::SD_LOG_INTERVAL) {
+    if (logToFile && millis() - lastTimeLogged > GeneralConfig::SD_LOG_INTERVAL) {
         lastTimeLogged = millis();
-
+        logFrame.qdVoltageMV = static_cast<uint32_t>(qdRailVoltage * 1000);
+        logFrame.timestamp = millis();
         logFrame.deployed = deployed;
+        logFrame.baroAlt = smoothedBaroAlt;
         fileLogger.log(logFrame);
     }
 

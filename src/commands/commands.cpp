@@ -73,6 +73,7 @@ void Commands::CrosshairTelem(System& sm, const RnpPacketSerialized& packet)
 	crosshairTelem.system_status = sm.crosshair.systemstatus.getStatus();
 	crosshairTelem.qdVoltageMV = static_cast<uint32_t>(sm.crosshair.qdRailVoltage * 1000);
 	crosshairTelem.deployed = sm.crosshair.deployed;
+	crosshairTelem.baro_alt = sm.crosshair.smoothedBaroAlt;
 	crosshairTelem.system_time = millis();
 
 	sm.networkmanager.sendPacket(crosshairTelem);
