@@ -24,7 +24,7 @@
 System::System():
 RicCoreSystem(Commands::command_map,Commands::defaultEnabledCommands,Serial),
 vspi(0),
-filestore(vspi,PinMap::sdcs,SD_SCK_MHZ(50),false,&systemstatus)
+filestore(vspi,PinMap::sdcs,SD_SCK_MHZ(20),false,&systemstatus)
 {};
 
 
